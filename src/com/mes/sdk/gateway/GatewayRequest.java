@@ -97,11 +97,128 @@ public class GatewayRequest extends RequestObject {
 	}
 	
 	/**
+	 * Sets the Device ID (Digital Fingerprint).
+	 * @param deviceId
+	 * @return
+	 */
+	public GatewayRequest deviceId(String deviceId) {
+		setParameter("device_id", deviceId);
+		return this;
+	}
+	
+	/**
+	 * Sets the ISO 4217 Currency Code. Can be either numeric (ex. 840), or Alpha (ex. USD).
+	 * @param isoCode
+	 * @return
+	 */
+	public GatewayRequest currency(String isoCode) {
+		setParameter("currency_code", isoCode);
+		return this;
+	}
+	
+	public GatewayRequest cardholderName(String firstName, String lastName) {
+		setParameter("cardholder_first_name", firstName);
+		setParameter("cardholder_last_name", lastName);
+		return this;
+	}
+	
+	public GatewayRequest cardholderAddress(String address, String zip) {
+		setParameter("cardholder_street_address", address);
+		setParameter("cardholder_zip", zip);
+		return this;
+	}
+	
+	public GatewayRequest cardholderEmail(String email) {
+		setParameter("cardholder_email", email);
+		return this;
+	}
+	
+	public GatewayRequest cardholderPhone(String phone) {
+		setParameter("cardholder_phone", phone);
+		return this;
+	}
+	
+	public GatewayRequest cardholderIPAddress(String ipAddress) {
+		setParameter("ip_address", ipAddress);
+		return this;
+	}
+	
+	/**
+	 * Cardholder ISO 3166 Country Code (Alpha-2)
+	 * @param code
+	 * @return
+	 */
+	public GatewayRequest cardholderCountry(String code) {
+		setParameter("country_code", code);
+		return this;
+	}
+	
+	public GatewayRequest shippingName(String firstName, String lastName) {
+		setParameter("ship_to_first_name", firstName);
+		setParameter("ship_to_last_name", lastName);
+		return this;
+	}
+	
+	public GatewayRequest shippingAddress(String address, String zip) {
+		setParameter("ship_to_address", address);
+		setParameter("ship_to_zip", zip);
+		return this;
+	}
+	
+	/**
+	 * Shipping destination ISO 3166 Country Code (Alpha-2)
+	 * @param code
+	 * @return
+	 */
+	public GatewayRequest shippingCountry(String code) {
+		setParameter("dest_country_code", code);
+		return this;
+	}
+	
+	/**
+	 * A flag to designate the transaction as being part of a subscription.<br />
+	 * Solely used for fraud analysis.
+	 * @param subscription
+	 * @return
+	 */
+	public GatewayRequest isSubscription(boolean subscription) {
+		setParameter("subscription", subscription);
+		return this;
+	}
+	
+	/**
+	 * A flag to designate the transaction as being a digital download or product.<br />
+	 * Solely used for fraud analysis.
+	 * @param subscription
+	 * @return
+	 */
+	public GatewayRequest isDigitalGoods(boolean digital) {
+		setParameter("digital_goods", digital);
+		return this;
+	}
+	
+	/**
 	 * Sets the request amount.
 	 * @param amount The requested amount.
 	 */
 	public GatewayRequest amount(BigDecimal amount) {
 		requestTable.put("transaction_amount", amount.toString());
+		return this;
+	}
+	
+	/**
+	 * Data specific to a user account. Used for fraud analysis.
+	 * @param accountName
+	 * @param accountEmail
+	 * @param accountCreationDate
+	 * @param accountModificationDate
+	 * @return
+	 */
+	public GatewayRequest accountData(String accountName, String accountEmail, String accountCreationDate, String accountModificationDate) {
+		requestTable.put("account_name", accountName);
+		requestTable.put("account_email", accountEmail);
+		requestTable.put("account_creation_date", accountCreationDate);
+		requestTable.put("account_last_change", accountModificationDate);
 		return this;
 	}
 

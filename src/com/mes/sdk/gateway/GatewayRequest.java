@@ -43,7 +43,8 @@ public class GatewayRequest extends RequestObject {
 	  "currency_code", "recurring_pmt_num", "recurring_pmt_count", "debit_pin_block", "debit_ksn", 
 	  "cardholder_first_name", "cardholder_last_name", "cardholder_email", "cardholder_phone",
 	  "ship_to_first_name", "ship_to_last_name", "ship_to_phone", "ship_to_address", "ship_to_zip", "dest_country_code",
-	  "ip_address", "cust_host_name", "http_browser_type", "customer_ani", "customer2digits", "prod_sku", "ship_method"
+	  "ip_address", "cust_host_name", "http_browser_type", "customer_ani", "customer2digits", "prod_sku", "ship_method",
+	  "country_code", "subscription", "digital_goods", "account_name", "account_email", "account_creation_date", "account_last_change"
 	};
 	
 	private final TransactionType type;
@@ -221,7 +222,7 @@ public class GatewayRequest extends RequestObject {
 		requestTable.put("account_last_change", accountModificationDate);
 		return this;
 	}
-
+	
 	@Override
 	public void validateRequest() {
 		switch(type) {

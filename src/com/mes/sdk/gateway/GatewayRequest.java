@@ -46,7 +46,7 @@ public class GatewayRequest extends RequestObject {
 	  "ip_address", "cust_host_name", "customer_browser_type", "customer_ani", "customer_ani_ii", "prod_sku", "shipping_method",
 	  "country_code", "subscription", "digital_goods", "account_name", "account_email", "account_creation_date", "account_last_change",
 	  "line_item_count", "merchant_tax_id", "customer_tax_id", "summary_commodity_code", "discount_amount", "shipping_amount", "duty_amount", 
-	  "vat_invoice_number", "order_date vat_amount", "alt_tax_amount", "alt_tax_amount_indicator", "visa_line_item", "mc_line_item", "amex_line_item", 
+	  "vat_invoice_number", "order_date", "vat_amount", "alt_tax_amount", "alt_tax_amount_indicator", "visa_line_item", "mc_line_item", "amex_line_item", 
 	  "requester_name", "cardholder_reference_number", "rctl_extended_avs", "rctl_account_balance", "rctl_partial_auth", "resp_encoding",
 	};
 	

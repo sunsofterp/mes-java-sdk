@@ -8,6 +8,7 @@ import java.util.Map;
 import com.mes.sdk.core.ApiInterface;
 import com.mes.sdk.core.Http;
 import com.mes.sdk.exception.MesRuntimeException;
+import com.mes.sdk.gateway.Level3.LineItemData;
 
 public class Gateway implements ApiInterface<GatewayRequest> {
 	
@@ -30,10 +31,12 @@ public class Gateway implements ApiInterface<GatewayRequest> {
 		http.run();
 		return parseResponse();
 	}
-
+	
 	public String parseRequest(GatewayRequest req) {
-		String requestString = "profile_id=".concat(settings.getProfileId());
-		requestString = requestString.concat("&profile_key=").concat(settings.getProfileKey());
+	  StringBuilder sb = new StringBuilder();
+	  
+		sb.append("profile_id=").append(settings.getProfileId());
+		sb.append("&profile_key=").append(settings.getProfileKey());
 		
 		String typeCode = null;
 		switch( ((GatewayRequest) req).getType() ) {
@@ -52,16 +55,30 @@ public class Gateway implements ApiInterface<GatewayRequest> {
 		}
 		
 		if(typeCode != null)
-			requestString = requestString.concat("&transaction_type=").concat(typeCode);
+			sb.append("&transaction_type=").append(typeCode);
 		
 		for(Map.Entry<String, String> pair : req.requestTable.entrySet()) {
 			try {
-				requestString = requestString.concat("&").concat(pair.getKey()).concat("=").concat(URLEncoder.encode(pair.getValue(), "UTF-8"));
+				sb.append("&").append(pair.getKey()).append("=").append(URLEncoder.encode(pair.getValue(), "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
 				throw new MesRuntimeException("Unable to URL Encode the following value: "+pair.getValue());
 			}
 		}
-		return requestString;
+		
+		// Add each level 3 line items to the request.
+		for(int i=0; i<req.lineItems.size(); ++i) {
+		  LineItemData lineItem = req.lineItems.get(i);
+		  try {
+		    sb.append("&").append(lineItem.getFieldName()).append("=");
+        sb.append(URLEncoder.encode(lineItem.toString(), "UTF-8"));
+      } catch (UnsupportedEncodingException e) {
+        throw new MesRuntimeException("Unable to URL Encode the following line item value: "+lineItem.toString());
+      }
+		}
+		if(req.lineItems.size() > 0) {
+		  sb.append("&").append(LineItemData.lineItemCountFieldName).append("=").append(req.lineItems.size());
+		}
+		return sb.toString();
 	}
 	
 	public GatewayResponse parseResponse() {

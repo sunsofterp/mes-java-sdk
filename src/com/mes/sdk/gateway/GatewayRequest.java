@@ -1,12 +1,14 @@
 package com.mes.sdk.gateway;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import com.mes.sdk.core.RequestObject;
 import com.mes.sdk.core.Util;
 import com.mes.sdk.exception.InvalidFieldException;
 import com.mes.sdk.exception.MesRuntimeException;
 import com.mes.sdk.exception.ValidationException;
+import com.mes.sdk.gateway.Level3.LineItemData;
 
 /**
  * The GatewayRequest Object is used to store request fields, and is passed to the Gateway.run method.
@@ -50,11 +52,24 @@ public class GatewayRequest extends RequestObject {
 	  "requester_name", "cardholder_reference_number", "rctl_extended_avs", "rctl_account_balance", "rctl_partial_auth", "resp_encoding",
 	};
 	
+	protected ArrayList<LineItemData> lineItems;
+	
 	private final TransactionType type;
 	
 	public GatewayRequest(TransactionType t) {
 		super();
+		lineItems = new ArrayList<LineItemData>();
 		this.type = t;
+	}
+	
+	/**
+	 * Adds a level 3 line item to the request.
+	 * @param lineItem
+	 * @return
+	 */
+	public GatewayRequest addLineItem(LineItemData lineItem) {
+	  lineItems.add(lineItem);
+	  return this;
 	}
 	
 	public TransactionType getType() {
@@ -225,6 +240,190 @@ public class GatewayRequest extends RequestObject {
 		requestTable.put("account_last_change", accountModificationDate);
 		return this;
 	}
+	
+	/**
+	 * Sets the tax amount for this transaction. The tax amount does not add to the transaction amount, and is for reporting purposes only.<br />
+	 * <b>To achieve best interchange on Level 2, and Level 3 transactions, the amount must be between 0.1% - 21.0% of the transaction amount (Visa/MC requirement).</b>
+	 * @param tax
+	 * @return
+	 */
+	public GatewayRequest taxAmount(String tax) {
+	  setParameter("tax_amount", tax);
+	  return this;
+	}
+	
+	/**
+	 * Sets the merchant's VAT Tax ID<br />
+	 * <br />
+	 * <b>Level 3 Usage:</b> Visa
+	 * @param id
+	 * @return
+	 */
+	public GatewayRequest merchantTaxId(String id) {
+	  setParameter("merchant_tax_id", id);
+	  return this;
+	}
+	
+	 /**
+   * Sets the customer's VAT Tax ID<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa
+   * @param id
+   * @return
+   */
+  public GatewayRequest customerTaxId(String id) {
+    setParameter("customer_tax_id", id);
+    return this;
+  }
+	
+  /**
+   * Sets the Summary Commodity Code<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa
+   * @param code
+   * @return
+   */
+  public GatewayRequest summaryCommodityCode(String code) {
+    setParameter("summary_commodity_code", code);
+    return this;
+  }
+  
+  /**
+   * Sets the Discount amount<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa
+   * @param amount
+   * @return
+   */
+  public GatewayRequest discountAmount(String amount) {
+    setParameter("discount_amount", amount);
+    return this;
+  }
+  
+  /**
+   * Sets the Shipping amount<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa / MasterCard
+   * @param amount
+   * @return
+   */
+  public GatewayRequest shippingAmount(String amount) {
+    setParameter("shipping_amount", amount);
+    return this;
+  }
+  
+  /**
+   * Sets the Duty amount<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa / MasterCard
+   * @param amount
+   * @return
+   */
+  public GatewayRequest dutyAmount(String amount) {
+    setParameter("duty_amount", amount);
+    return this;
+  }
+  
+  /**
+   * Sets the VAT amount<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa
+   * @param amount
+   * @return
+   */
+  public GatewayRequest vatAmount(String amount) {
+    setParameter("vat_amount", amount);
+    return this;
+  }
+  
+  /**
+   * Sets the ISO country code of the shipping destination.<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa / MasterCard
+   * @param code
+   * @return
+   */
+  public GatewayRequest destCountryCode(String code) {
+    setParameter("dest_country_code", code);
+    return this;
+  }
+  
+  /**
+   * Sets the VAT Invoice Number.<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa
+   * @param invoice
+   * @return
+   */
+  public GatewayRequest vatInvoice(String invoice) {
+    setParameter("vat_invoice_number", invoice);
+    return this;
+  }
+  
+  /**
+   * Sets the ZIP (5, or 9) code for the shipping destination.<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa / MasterCard
+   * @param zip
+   * @return
+   */
+  public GatewayRequest shipToZip(String zip) {
+    setParameter("ship_to_zip", zip);
+    return this;
+  }
+  
+  /**
+   * Sets the ZIP (5, or 9) code for the shipping origin.<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa / MasterCard
+   * @param zip
+   * @return
+   */
+  public GatewayRequest shipFromZip(String zip) {
+    setParameter("ship_from_zip", zip);
+    return this;
+  }
+  
+  /**
+   * Sets the Order Date.<br />
+   * Format: YYMMDD<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Visa
+   * @param date
+   * @return
+   */
+  public GatewayRequest orderDate(String date) {
+    setParameter("order_date", date);
+    return this;
+  }
+  
+  /*
+   * MasterCard Level 3
+   */
+  
+  /**
+   * Sets the alternate tax amount<br />
+   * <br />
+   * <b>Level 3 Usage:</b> MasterCard
+   * @param amount
+   * @return
+   */
+  public GatewayRequest altTaxAmount(String amount) {
+    setParameter("alt_tax_amount", amount);
+    return this;
+  }
+  
+  /**
+   * Sets the alternate tax amount indicator<br />
+   * <br />
+   * <b>Level 3 Usage:</b> MasterCard
+   * @param indicator
+   * @return
+   */
+  public GatewayRequest altTaxAmountIndicator(String indicator) {
+    setParameter("alt_tax_amount_indicator", indicator);
+    return this;
+  }
 	
 	@Override
 	public void validateRequest() {

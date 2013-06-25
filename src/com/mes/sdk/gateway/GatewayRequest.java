@@ -327,7 +327,7 @@ public class GatewayRequest extends RequestObject {
   /**
    * Sets the VAT amount<br />
    * <br />
-   * <b>Level 3 Usage:</b> Visa
+   * <b>Level 3 Usage:</b> Visa / AMEX
    * @param amount
    * @return
    */
@@ -363,7 +363,7 @@ public class GatewayRequest extends RequestObject {
   /**
    * Sets the ZIP (5, or 9) code for the shipping destination.<br />
    * <br />
-   * <b>Level 3 Usage:</b> Visa / MasterCard
+   * <b>Level 3 Usage:</b> Visa / MasterCard / AMEX
    * @param zip
    * @return
    */
@@ -422,6 +422,30 @@ public class GatewayRequest extends RequestObject {
    */
   public GatewayRequest altTaxAmountIndicator(String indicator) {
     setParameter("alt_tax_amount_indicator", indicator);
+    return this;
+  }
+  
+  /**
+   * Sets the Amex cardholder reference number, used by the cardholder to identify each transaction.<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Amex
+   * @param ref
+   * @return
+   */
+  public GatewayRequest cardholderReferenceNumber(String ref) {
+    setParameter("cardholder_reference_number", ref);
+    return this;
+  }
+  
+  /**
+   * Sets the name of the Amex cardholder purchasing the product or service.<br />
+   * <br />
+   * <b>Level 3 Usage:</b> Amex
+   * @param ref
+   * @return
+   */
+  public GatewayRequest requesterName(String name) {
+    setParameter("requester_name", name);
     return this;
   }
 	

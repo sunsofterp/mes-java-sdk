@@ -3,6 +3,8 @@ package com.mes.sdk.reporting;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.mes.sdk.core.ApiInterface;
 import com.mes.sdk.core.Http;
@@ -13,7 +15,9 @@ public class Reporting implements ApiInterface<ReportingRequest> {
 	private final Http http;
 	private final ReportingSettings settings;
 	private boolean success;
-
+	
+	private final static Logger LOG = Logger.getLogger(Reporting.class.getName());
+	
 	/**
 	 * The main object used to communicate.
 	 * @param settings An instance of {@link ReportingSettings}.
@@ -27,16 +31,16 @@ public class Reporting implements ApiInterface<ReportingRequest> {
         success = false; // Assume false
         http.setRequestString(parseRequest(request));
         if(settings.isVerbose())
-            System.out.println("Sending request: "+http.getRequestString());
+          LOG.log(Level.INFO, "Sending request: "+http.getRequestString());
         http.run();
 
         ReportingResponse resp = parseResponse();
         if (settings.isVerbose()) {
         	if(wasSuccessful())
-        		System.out.println("Response: (HTTP "+http.getHttpCode()+" - "+http.getDuration()+"ms - Request Succeeded) " + resp);
+        		LOG.info("Response: (HTTP "+http.getHttpCode()+" - "+http.getDuration()+"ms - Request Succeeded) " + resp);
         	else {
-        		System.out.println("Response: (HTTP "+http.getHttpCode()+" - "+http.getDuration()+"ms - Request Failed) " + resp);
-        		System.out.println(resp.getRawResponse());
+        		LOG.info("Response: (HTTP "+http.getHttpCode()+" - "+http.getDuration()+"ms - Request Failed) " + resp);
+        		LOG.info(resp.getRawResponse());
         	}
         }
         return resp;

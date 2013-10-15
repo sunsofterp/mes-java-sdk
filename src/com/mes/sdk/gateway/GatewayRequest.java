@@ -40,7 +40,7 @@ public class GatewayRequest extends RequestObject {
 	private static final String[] requestFields = {
 	  "profile_id", "profile_key", "card_number", "card_exp_date", "card_swipe", "card_id", "card_number_encrypted", "card_swipe_encrypted", "card_swipe_ksn",
 	  "transaction_amount", "transaction_id", "transaction_type", "moto_ecommerce_ind", "reference_number", "client_reference_number",
-	  "auth_code", "batch_number", "retry_id", "cvv2", "invoice_number", "cardholder_street_address", "cardholder_zip",
+	  "auth_code", "batch_number", "retry_id", "retry_request", "cvv2", "invoice_number", "cardholder_street_address", "cardholder_zip",
 	  "tax_amount", "ship_to_zip", "merchant_name", "dm_contact_info", "xid", "cavv", "ucaf_collection_ind", "ucaf_auth_data",
 	  "currency_code", "recurring_pmt_num", "recurring_pmt_count", "debit_pin_block", "debit_ksn", "contactless",
 	  "cardholder_first_name", "cardholder_last_name", "cardholder_email", "cardholder_phone",
@@ -49,7 +49,9 @@ public class GatewayRequest extends RequestObject {
 	  "country_code", "subscription", "digital_goods", "account_name", "account_email", "account_creation_date", "account_last_change",
 	  "line_item_count", "merchant_tax_id", "customer_tax_id", "summary_commodity_code", "discount_amount", "shipping_amount", "duty_amount", 
 	  "vat_invoice_number", "order_date", "vat_amount", "alt_tax_amount", "alt_tax_amount_indicator", "visa_line_item", "mc_line_item", "amex_line_item", 
-	  "requester_name", "cardholder_reference_number", "rctl_extended_avs", "rctl_account_balance", "rctl_partial_auth", "resp_encoding",
+	  "requester_name", "cardholder_reference_number", "resp_encoding", "store_card",
+	  "rctl_extended_avs", "rctl_account_balance", "rctl_partial_auth", "rctl_card_number_truncated", "rctl_resp_hash", // Response control fields
+	  "industry_code", "statement_date_begin", "statement_date_end", "name_of_place", "rate_daily", // Travel / Lodging
 	};
 	
 	protected ArrayList<LineItemData> lineItems;

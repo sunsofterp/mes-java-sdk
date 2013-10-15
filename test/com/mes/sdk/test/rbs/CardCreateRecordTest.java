@@ -1,5 +1,8 @@
 package com.mes.sdk.test.rbs;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.mes.sdk.exception.MesRuntimeException;
 import com.mes.sdk.rbs.Rbs;
 import com.mes.sdk.rbs.RbsRequest;
@@ -8,12 +11,13 @@ import com.mes.sdk.rbs.RbsRequest.PaymentType;
 import com.mes.sdk.rbs.RbsRequest.RequestType;
 import com.mes.sdk.rbs.RbsResponse;
 import com.mes.sdk.rbs.RbsSettings;
-import com.mes.sdk.test.TestInterface;
+import com.mes.sdk.test.MesTest;
 
-class CreateRecordTestCase implements TestInterface {
+class CreateRecordTestCase extends MesTest {
 	
 	private Rbs rbs;
 	private RbsSettings settings;
+	private final static Logger LOG = Logger.getLogger(CreateRecordTestCase.class.getName());
 	
 	@Override
 	public void run() {
@@ -36,7 +40,7 @@ class CreateRecordTestCase implements TestInterface {
 				.setPaymentCount("0");
 			
 			RbsResponse cResponse = rbs.run(cRequest);
-			System.out.println(cResponse);
+			LOG.log(Level.INFO, cResponse.toString());
 			if(cResponse.requestSuccessful()) {
 				// Store Results
 			}

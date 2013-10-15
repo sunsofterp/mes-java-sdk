@@ -1,5 +1,8 @@
 package com.mes.sdk.test.gateway;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.mes.sdk.core.Settings;
 import com.mes.sdk.exception.MesRuntimeException;
 import com.mes.sdk.gateway.CcData;
@@ -12,12 +15,13 @@ import com.mes.sdk.gateway.Level3.LineItemData.DebitCreditInd;
 import com.mes.sdk.gateway.Level3.MasterCardLineItem;
 import com.mes.sdk.gateway.Level3.MasterCardLineItem.DiscountInd;
 import com.mes.sdk.gateway.Level3.MasterCardLineItem.NetGrossInd;
-import com.mes.sdk.test.TestInterface;
+import com.mes.sdk.test.MesTest;
 
-class SaleLevel3MCTestCase implements TestInterface {
+class SaleLevel3MCTestCase extends MesTest {
 	
 	private Gateway gateway;
 	private GatewaySettings settings;
+	private final static Logger LOG = Logger.getLogger(SaleLevel3MCTestCase.class.getName());
 	
 	@Override
 	public void run() {
@@ -88,7 +92,7 @@ class SaleLevel3MCTestCase implements TestInterface {
         .altTaxAmountIndicator("N");
 
 			GatewayResponse sResponse = gateway.run(sRequest);
-			System.out.println(sResponse);
+			LOG.log(Level.INFO, sResponse.toString());
 		} catch (MesRuntimeException e) {
 			e.printStackTrace();
 		}

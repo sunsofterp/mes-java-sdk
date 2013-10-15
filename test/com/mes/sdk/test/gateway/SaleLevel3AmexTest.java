@@ -1,5 +1,8 @@
 package com.mes.sdk.test.gateway;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.mes.sdk.core.Settings;
 import com.mes.sdk.exception.MesRuntimeException;
 import com.mes.sdk.gateway.CcData;
@@ -9,14 +12,13 @@ import com.mes.sdk.gateway.GatewayRequest.TransactionType;
 import com.mes.sdk.gateway.GatewayResponse;
 import com.mes.sdk.gateway.GatewaySettings;
 import com.mes.sdk.gateway.Level3.AmexLineItem;
-import com.mes.sdk.gateway.Level3.LineItemData.DebitCreditInd;
-import com.mes.sdk.gateway.Level3.VisaLineItem;
-import com.mes.sdk.test.TestInterface;
+import com.mes.sdk.test.MesTest;
 
-class SaleLevel3AXTestCase implements TestInterface {
+class SaleLevel3AXTestCase extends MesTest {
 
   private Gateway gateway;
   private GatewaySettings settings;
+  private final static Logger LOG = Logger.getLogger(SaleLevel3AXTestCase.class.getName());
 
   @Override
   public void run() {
@@ -62,7 +64,7 @@ class SaleLevel3AXTestCase implements TestInterface {
       .vatAmount("0.00");
 
       GatewayResponse sResponse = gateway.run(sRequest);
-      System.out.println(sResponse);
+      LOG.log(Level.INFO, sResponse.toString());
     } catch (MesRuntimeException e) {
       e.printStackTrace();
     }

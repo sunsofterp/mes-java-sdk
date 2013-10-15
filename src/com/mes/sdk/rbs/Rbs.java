@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.mes.sdk.core.ApiInterface;
 import com.mes.sdk.core.Http;
@@ -14,6 +16,7 @@ public class Rbs implements ApiInterface<RbsRequest> {
 	private final Http http;
 	private final RbsSettings settings;
 
+	private final static Logger LOG = Logger.getLogger(Rbs.class.getName());
 	
 	/**
 	 * The main object used to communicate with the Payment Gateway.
@@ -28,7 +31,7 @@ public class Rbs implements ApiInterface<RbsRequest> {
 	public RbsResponse run(RbsRequest requestObject) {
 		http.setRequestString(parseRequest(requestObject));
 		if(settings.isVerbose())
-            System.out.println("Sending request: "+http.getRequestString());
+		  LOG.log(Level.INFO, "Sending request: "+http.getRequestString());
 		http.run();
 
 		RbsResponse resp = parseResponse();

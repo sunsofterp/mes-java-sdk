@@ -7,6 +7,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.mes.sdk.exception.CommunicationException;
 import com.mes.sdk.exception.MesRuntimeException;
@@ -23,6 +25,8 @@ public class Http {
 	protected String httpResponse;
 	protected String rawResponse;
 	protected float duration;
+	
+	private final static Logger LOG = Logger.getLogger(Http.class.getName());
 	
 	/**
 	 * Create a new HTTP object based on the settings set in {@link Settings}.
@@ -42,7 +46,7 @@ public class Http {
 		long start = System.currentTimeMillis();
 		try {
 			if(settings.isVerbose())
-				System.out.print("Connecting to: "+settings.getHostUrl()+" ... ");
+				LOG.log(Level.INFO, "Connecting to: "+settings.getHostUrl()+" ... ");
 			
 			if(settings.getMethod() == Settings.Method.GET)
 				connection = (HttpURLConnection) new URL(settings.getHostUrl().concat("?").concat(requestString)).openConnection();
@@ -66,7 +70,7 @@ public class Http {
 				this.httpResponse = connection.getResponseMessage();
 				
 				if(settings.isVerbose())
-					System.out.println(httpCode + ":" + httpResponse);
+				  LOG.log(Level.INFO, httpCode + ":" + httpResponse);
 			}
 			
 			
@@ -81,7 +85,7 @@ public class Http {
 				}
 				reader.close();
 				if(settings.isVerbose())
-					System.out.println(resp);
+				  LOG.log(Level.INFO, resp);
 			}
 		} catch (SocketTimeoutException e) {
 			throw new CommunicationException("Request timed out after "+settings.getTimeout()+"ms.");

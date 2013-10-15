@@ -1,5 +1,8 @@
 package com.mes.sdk.test.gateway;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.mes.sdk.core.Settings;
 import com.mes.sdk.exception.MesRuntimeException;
 import com.mes.sdk.gateway.CcData;
@@ -8,12 +11,13 @@ import com.mes.sdk.gateway.GatewayRequest;
 import com.mes.sdk.gateway.GatewayRequest.TransactionType;
 import com.mes.sdk.gateway.GatewayResponse;
 import com.mes.sdk.gateway.GatewaySettings;
-import com.mes.sdk.test.TestInterface;
+import com.mes.sdk.test.MesTest;
 
-class SaleTestCase implements TestInterface {
+class SaleTestCase extends MesTest {
 	
 	private Gateway gateway;
 	private GatewaySettings settings;
+	private final static Logger LOG = Logger.getLogger(SaleTestCase.class.getName());
 	
 	@Override
 	public void run() {
@@ -38,7 +42,7 @@ class SaleTestCase implements TestInterface {
 				.setParameter("invoice_number", "123456")
 				.setParameter("client_reference_number", "Java SDK Test");
 			GatewayResponse sResponse = gateway.run(sRequest);
-			System.out.println(sResponse);
+			LOG.log(Level.INFO, sResponse.toString());
 		} catch (MesRuntimeException e) {
 			e.printStackTrace();
 		}
@@ -50,5 +54,5 @@ class SaleTestCase implements TestInterface {
 public class SaleTest {
 	public static void main(String[] args) {
 		new SaleTestCase().run();
-	}	
+	}
 }

@@ -1,19 +1,24 @@
 package com.mes.sdk.test.gateway;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.mes.sdk.core.Settings;
 import com.mes.sdk.exception.MesRuntimeException;
 import com.mes.sdk.gateway.CcData;
+import com.mes.sdk.gateway.Gateway;
 import com.mes.sdk.gateway.GatewayRequest;
 import com.mes.sdk.gateway.GatewayRequest.TransactionType;
 import com.mes.sdk.gateway.GatewayResponse;
 import com.mes.sdk.gateway.GatewaySettings;
-import com.mes.sdk.gateway.Gateway;
-import com.mes.sdk.test.TestInterface;
+import com.mes.sdk.test.MesTest;
 
-class CreditTestCase implements TestInterface {
+class CreditTestCase extends MesTest {
 	
 	private Gateway gateway;
 	private GatewaySettings settings;
+	
+	private final static Logger LOG = Logger.getLogger(CreditTestCase.class.getName());
 	
 	@Override
 	public void run() {
@@ -37,7 +42,7 @@ class CreditTestCase implements TestInterface {
 			.setParameter("client_reference_number", "Java SDK Test");
 			
 			GatewayResponse cResponse = gateway.run(cRequest);
-			System.out.println(cResponse);
+			LOG.log(Level.INFO, cResponse.toString());
 		} catch (MesRuntimeException e) {
 			e.printStackTrace();
 		}

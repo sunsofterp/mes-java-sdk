@@ -475,7 +475,7 @@ public class GatewayRequest extends RequestObject {
 			break;
 		case CREDIT:
 			validateRequiredField("transaction_amount");
-			validateRequiredField("card_number");
+			validateCardData();
 			break;
 		case REFUND:
 			validateRequiredField("transaction_id");

@@ -82,7 +82,7 @@ public class GatewayRequest extends RequestObject {
 	public GatewayRequest setParameter(String fieldName, String value) throws InvalidFieldException {
 		for(int i=0; i<requestFields.length; i++) {
 			if(fieldName.equals(requestFields[i])) {
-				requestTable.put(fieldName, value);
+			    super.setParameter(fieldName, value);
 				return this;
 			}
 		}
@@ -95,16 +95,16 @@ public class GatewayRequest extends RequestObject {
 	 */
 	public final GatewayRequest cardData(CcData ccData) {
 		if(ccData.getToken() != null)
-			requestTable.put("card_id", ccData.getToken());
+		    super.setParameter("card_id", ccData.getToken());
 		else {
 			// Attempt to sanitize
 			String ccNumber = ccData.getCcNum().replaceAll("[^A-Za-z0-9]", "");
-			requestTable.put("card_number", ccNumber);
+			super.setParameter("card_number", ccNumber);
 		}
 		if(ccData.getExpDate() != null)
-			requestTable.put("card_exp_date", ccData.getExpDate());
+		    super.setParameter("card_exp_date", ccData.getExpDate());
 		if(ccData.getCvv() != null)
-			requestTable.put("cvv2", ccData.getCvv());
+		    super.setParameter("cvv2", ccData.getCvv());
 		return this;
 	}
 	
@@ -113,7 +113,7 @@ public class GatewayRequest extends RequestObject {
 	 * @param amount The requested amount.
 	 */
 	public GatewayRequest amount(String amount) {
-		requestTable.put("transaction_amount", amount);
+	    super.setParameter("transaction_amount", amount);
 		return this;
 	}
 	
@@ -223,7 +223,7 @@ public class GatewayRequest extends RequestObject {
 	 * @param amount The requested amount.
 	 */
 	public GatewayRequest amount(BigDecimal amount) {
-		requestTable.put("transaction_amount", amount.toString());
+	    setParameter("transaction_amount", amount.toString());
 		return this;
 	}
 	
@@ -236,10 +236,10 @@ public class GatewayRequest extends RequestObject {
 	 * @return
 	 */
 	public GatewayRequest accountData(String accountName, String accountEmail, String accountCreationDate, String accountModificationDate) {
-		requestTable.put("account_name", accountName);
-		requestTable.put("account_email", accountEmail);
-		requestTable.put("account_creation_date", accountCreationDate);
-		requestTable.put("account_last_change", accountModificationDate);
+	    setParameter("account_name", accountName);
+	    setParameter("account_email", accountEmail);
+	    setParameter("account_creation_date", accountCreationDate);
+	    setParameter("account_last_change", accountModificationDate);
 		return this;
 	}
 	

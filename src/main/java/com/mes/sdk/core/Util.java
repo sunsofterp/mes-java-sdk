@@ -11,7 +11,7 @@ public class Util {
      * @param ccNumber
      * @return true on a valid card number
      */
-    public static boolean CheckCC(String ccNumber) {
+    public static boolean checkCC(String ccNumber) {
         int sum = 0;
         boolean alternate = false;
         try {

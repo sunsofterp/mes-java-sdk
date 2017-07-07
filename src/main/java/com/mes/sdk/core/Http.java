@@ -10,6 +10,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +45,7 @@ public class Http {
      */
     public void run() {
         HttpURLConnection connection = null;
-        String resp = new String();
+        StringBuilder resp = new StringBuilder();
 
         long start = System.currentTimeMillis();
         try {
@@ -63,7 +65,7 @@ public class Http {
                 connection.setRequestMethod(settings.getMethod().toString());
                 connection.setDoInput(true);
 
-                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8);
                 writer.write(requestString);
                 writer.flush();
                 writer.close();
@@ -78,16 +80,16 @@ public class Http {
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream())
+                        new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)
                 );
 
-                String inputLine = new String();
+                String inputLine;
                 while ((inputLine = reader.readLine()) != null) {
-                    resp += inputLine;
+                    resp.append(inputLine);
                 }
                 reader.close();
                 if (settings.isVerbose())
-                    LOG.log(Level.INFO, resp);
+                    LOG.log(Level.INFO, resp.toString());
             }
         } catch (SocketTimeoutException e) {
             throw new CommunicationException("Request timed out after " + settings.getTimeout() + "ms.");
@@ -97,7 +99,7 @@ public class Http {
             if (connection != null)
                 connection.disconnect();
             this.duration = System.currentTimeMillis() - start;
-            this.rawResponse = resp;
+            this.rawResponse = resp.toString();
         }
 
     }

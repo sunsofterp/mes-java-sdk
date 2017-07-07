@@ -10,6 +10,7 @@ import com.mes.sdk.gateway.Level3.LineItemData;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The GatewayRequest Object is used to store request fields, and is passed to the Gateway.run method.
@@ -568,7 +569,7 @@ public class GatewayRequest extends RequestObject {
         if (requestTable.containsKey("card_number")) {
             // attempt to sanitize ccnum
 
-            if (!Util.CheckCC(requestTable.get("card_number")))
+            if (!Util.checkCC(requestTable.get("card_number")))
                 throw new MesRuntimeException("Card number is invalid");
             if (!requestTable.containsKey("card_exp_date"))
                 throw new ValidationException(type + " using \"card_number\" requires \"card_exp_date\".");
@@ -583,14 +584,14 @@ public class GatewayRequest extends RequestObject {
 
     @Override
     public String toString() {
-        String output = "";
-        for (String key : this.requestTable.keySet()) {
-            if (!toStringExclusions().contains(key)) {
-                output += String.format("Key: %s, Value: %s\n", key, this.requestTable.get(key));
+        StringBuilder output = new StringBuilder();
+        for (Map.Entry<String, String> entry : this.requestTable.entrySet()) {
+            if (!toStringExclusions().contains(entry.getKey())) {
+                output.append(String.format("Key: %s, Value: %s%n", entry.getKey(), entry.getValue()));
             }
         }
 
-        return output;
+        return output.toString();
     }
 
     private List<String> toStringExclusions() {
